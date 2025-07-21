@@ -23,6 +23,7 @@ PRODUCT_SHIPPING_API_LEVEL := 30
 
 # Call proprietary blob setup
 $(call inherit-product-if-exists, packages/apps/OneplusParts/parts.mk)
+$(call inherit-product-if-exists, vendor/oplus/camera/camera.mk)
 $(call inherit-product-if-exists, packages/apps/PocketMode/pocket_mode.mk)
 
 # Vendor Log Tag
@@ -37,6 +38,29 @@ TARGET_SCREEN_HEIGHT := 2400
 TARGET_SCREEN_WIDTH := 1080
 PRODUCT_AAPT_CONFIG := xxxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
+
+# Overlays
+PRODUCT_PACKAGES += \
+    CarrierConfigOverlay \
+    FrameworkResOverlayCupida \
+    FrameworkResOverlayDenniz \
+    FrameworkResOverlayPlatform \
+    OplusDozeOverlay \
+    SettingsOverlayPlatform \
+    SettingsProviderOverlay \
+    SystemUIOverlayPlatform \
+    TelephonyOverlay \
+    TetheringConfigOverlay \
+    WifiOverlay \
+    WifiOverlayCupida \
+    WifiOverlayDenniz
+
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay-lineage
+
+# Enforce RRO targets
+PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += $(LOCAL_PATH)/overlay-lineage
 
 # Updater
 AB_OTA_UPDATER := false
@@ -122,8 +146,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcamera_metadata_shim
 
-$(call inherit-product-if-exists, device/oplus/camera/camera.mk)
-
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0.vendor:64 \
@@ -203,6 +225,9 @@ PRODUCT_PACKAGES += \
 
 # Init
 $(call soong_config_set,libinit,vendor_init_lib,//$(DEVICE_PATH):libinit_MT6893)
+
+# UDFPS
+$(call soong_config_set,surfaceflinger,udfps_lib,//$(DEVICE_PATH):libudfps_extension.MT6893)
 
 # Keymaster
 PRODUCT_PACKAGES += \
@@ -285,20 +310,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/permissions/nfc_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/nfc_features.xml
-
-# Overlays
-PRODUCT_PACKAGES += \
-    FrameworkResOverlayPlatform \
-    SystemUIOverlayPlatform \
-    SettingsOverlayPlatform \
-    TelephonyOverlay \
-    CarrierConfigOverlay
-
-DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-lineage
-
-# Enforce RRO targets
-PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # fastbootd
 PRODUCT_PACKAGES += \
@@ -415,20 +426,6 @@ PRODUCT_PACKAGES += \
     ueventd.oplus.rc \
     ueventd.mtk.rc
 
-# Rro
-PRODUCT_PACKAGES += \
-    TetheringConfigOverlay \
-    WifiOverlay \
-    DozeOverlaySystem \
-    DozeOverlaySystemUI \
-    OplusDozeOverlay \
-    OPlusSettingsResTarget \
-    SettingsProviderOverlay \
-    FrameworkResOverlayCupida \
-    WifiOverlayCupida \
-    FrameworkResOverlayDenniz \
-    WifiOverlayDenniz
-
 # Soundtrigger
 PRODUCT_PACKAGES += \
     android.hardware.soundtrigger@2.3-impl \
@@ -484,9 +481,6 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal@2.0-service.mtk \
     android.hardware.thermal@2.0.vendor \
     android.hardware.thermal@1.0-impl
-
-# UDFPS
-$(call soong_config_set,surfaceflinger,udfps_lib,//$(DEVICE_PATH):libudfps_extension.MT6893)
 
 # USB
 PRODUCT_PACKAGES += \
@@ -545,7 +539,6 @@ PRODUCT_PACKAGES += \
     libbase_shim \
     libprocessgroup_shim \
     libshim
-
 
 # Inherit from vendor blobs
 $(call inherit-product, vendor/oplus/MT6893/MT6893-vendor.mk)
