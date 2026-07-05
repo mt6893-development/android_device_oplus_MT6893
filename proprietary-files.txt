@@ -1611,7 +1611,6 @@ odm/lib64/vendor.oplus.hardware.engineer@1.0.so
 odm/lib64/vendor.oplus.hardware.subsys-V1-ndk_platform.so
 odm/init.oplus.face.rc
 odm/init.oplus.seccommon.rc
-vendor/bin/chipinfo
 vendor/bin/conninfra_loader
 vendor/bin/dconfig
 vendor/bin/dexecutor
@@ -1627,7 +1626,6 @@ vendor/data/model/scene_detection.dla
 vendor/etc/apdb/APDB_MT6885_S01__W2238_ENUM
 vendor/etc/init/atci_service.rc
 vendor/etc/init/bootperf.rc
-vendor/etc/init/chipinfo_init.rc
 vendor/etc/init/dmc_core.rc
 vendor/etc/init/em_hidl_user.rc
 vendor/etc/init/gsm0710muxd.rc
