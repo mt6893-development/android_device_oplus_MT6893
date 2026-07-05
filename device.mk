@@ -301,6 +301,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.connectivity.common.rc \
     init.recovery.mt6893.rc \
+    chipinfo \
     init.connectivity.rc \
     init.modem.rc \
     init.oplus.rc \
