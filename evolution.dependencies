@@ -1,39 +1,40 @@
 [
   {
     "repository": "vendor_oplus_op6893",
-    "branch": "bka",
-    "target_path": "vendor/oplus/op6893"
+    "target_path": "vendor/oplus/op6893",
+    "branch": "bka"
   },
   {
     "repository": "kernel_oplus_mt6893",
-    "branch": "bka",
-    "target_path": "kernel/oplus/mt6893"
+    "target_path": "kernel/oplus/mt6893",
+    "branch": "bka"
   },
   {
     "repository": "hardware_oplus",
-    "branch": "bka",
-    "target_path": "hardware/oplus"
+    "target_path": "hardware/oplus",
+    "branch": "bka"
   },
   {
     "repository": "hardware_mediatek",
-    "branch": "bka",
-    "target_path": "hardware/mediatek"
+    "target_path": "hardware/mediatek",
+    "branch": "bka"
   },
   {
-    "repository": "device_mediatek_sepolicy_vndr",
-    "branch": "bka",
-    "target_path": "device/mediatek/sepolicy_vndr"
-  },
-  {
-    "repository": "liwhy1/proprietary_vendor_oplus_camera",
-    "branch": "main",
-    "target_path": "vendor/oplus/camera",
-    "remote": "gitlab"
+    "repository": "LineageOS/android_device_mediatek_sepolicy_vndr",
+    "target_path": "device/mediatek/sepolicy_vndr",
+    "remote": "github-non-los",
+    "branch": "lineage-23.2"
   },
   {
     "repository": "crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r498229b",
-    "branch": "14.0",
     "target_path": "prebuilts/clang/host/linux-x86/clang-r498229b",
-    "remote": "gitlab"
+    "remote": "gitlab",
+    "branch": "14.0"
+  },
+  {
+    "repository": "liwhy1/proprietary_vendor_oplus_camera",
+    "target_path": "vendor/oplus/camera",
+    "remote": "gitlab",
+    "branch": "main"
   }
 ]
