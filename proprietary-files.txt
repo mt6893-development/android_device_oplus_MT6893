@@ -15,7 +15,9 @@ odm/lib64/libadsprpc.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
 vendor/lib64/libadsprpc.so;DISABLE_DEPS
 
 # AEE
+vendor/lib/libaedv.so
 vendor/lib/libladder.so
+vendor/lib64/libaedv.so
 vendor/lib64/libladder.so
 
 # APU
