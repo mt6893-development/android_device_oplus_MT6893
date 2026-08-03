@@ -17,23 +17,6 @@ Build.BRAND=MTK
 ro.oplus.system.camera.name=com.oplus.camera
 oplus.camera.packname=com.oplus.camera
 
-# Dalvik
-dalvik.vm.ps-min-first-save-ms=150000
-dalvik.vm.image-dex2oat-Xms=64m
-dalvik.vm.image-dex2oat-Xmx=64m
-dalvik.vm.dex2oat-Xms=64m
-dalvik.vm.dex2oat-Xmx=512m
-dalvik.vm.usejit=true
-dalvik.vm.usejitprofiles=true
-dalvik.vm.dexopt.secondary=true
-dalvik.vm.dexopt.thermal-cutoff=2
-dalvik.vm.appimageformat=lz4
-ro.dalvik.vm.native.bridge=0
-dalvik.vm.dex2oat-resolve-startup-strings=true
-dalvik.vm.dex2oat-max-image-block-size=524288
-dalvik.vm.minidebuginfo=true
-dalvik.vm.dex2oat-minidebuginfo=true
-
 # Dexopt
 pm.dexopt.first-boot=quicken
 pm.dexopt.boot=verify
