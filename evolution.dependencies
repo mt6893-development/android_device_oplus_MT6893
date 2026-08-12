@@ -10,14 +10,16 @@
     "branch": "bka"
   },
   {
-    "repository": "hardware_oplus",
+    "repository": "LineageOS/android_hardware_oplus",
     "target_path": "hardware/oplus",
-    "branch": "bka"
+    "remote": "github-non-los",
+    "branch": "lineage-23.2"
   },
   {
-    "repository": "hardware_mediatek",
+    "repository": "LineageOS/android_hardware_mediatek",
     "target_path": "hardware/mediatek",
-    "branch": "bka"
+    "remote": "github-non-los",
+    "branch": "lineage-23.2"
   },
   {
     "repository": "LineageOS/android_device_mediatek_sepolicy_vndr",
