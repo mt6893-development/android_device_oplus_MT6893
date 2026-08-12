@@ -10,20 +10,22 @@
     "branch": "cnb"
   },
   {
-    "repository": "hardware_oplus",
+    "repository": "LineageOS/android_hardware_oplus",
     "target_path": "hardware/oplus",
-    "branch": "cnb"
+    "remote": "github-non-los",
+    "branch": "lineage-24.0"
   },
   {
-    "repository": "hardware_mediatek",
+    "repository": "LineageOS/android_hardware_mediatek",
     "target_path": "hardware/mediatek",
-    "branch": "cnb"
+    "remote": "github-non-los",
+    "branch": "lineage-24.0"
   },
   {
     "repository": "LineageOS/android_device_mediatek_sepolicy_vndr",
     "target_path": "device/mediatek/sepolicy_vndr",
     "remote": "github-non-los",
-    "branch": "lineage-24"
+    "branch": "lineage-24.0"
   },
   {
     "repository": "crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r498229b",
@@ -31,4 +33,10 @@
     "remote": "gitlab",
     "branch": "14.0"
   },
+  {
+    "repository": "liwhy1/proprietary_vendor_oplus_camera",
+    "target_path": "vendor/oplus/camera",
+    "remote": "gitlab",
+    "branch": "main"
+  }
 ]
