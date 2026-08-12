@@ -4,11 +4,11 @@ Date: Tue, 26 May 2026 17:38:00 +0200
 Subject: [PATCH] fingerprint: Poke brightness after fingerprint events
 
 ---
- hidl/fingerprint/BiometricsFingerprint.cpp | 23 ++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ hidl/fingerprint/BiometricsFingerprint.cpp | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp b/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
-index 6ce2b69..a1cbd17 100644
+index 6ce2b69..2f77055 100644
 --- a/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
 +++ b/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
 @@ -17,6 +17,7 @@
@@ -19,7 +19,7 @@ index 6ce2b69..a1cbd17 100644
  
  namespace android {
  namespace hardware {
-@@ -25,6 +26,25 @@ namespace fingerprint {
+@@ -25,6 +26,29 @@ namespace fingerprint {
  namespace V2_3 {
  namespace implementation {
  
@@ -29,14 +29,18 @@ index 6ce2b69..a1cbd17 100644
 +        if (fd != -1) {
 +            char p[16];
 +            int ret = read(fd, p, sizeof(p) - 1);
++            if (ret <= 0) {
++                close(fd);
++                return;
++            }
 +            p[ret] = 0;
-+            std::string original = std::to_string(atoi(p));
-+            std::string target = std::to_string(atoi(p) - 50);
-+            usleep(500000);
++            int current = atoi(p);
++            int target = (current < 70) ? current + 50 : current - 50;
 +
-+            write(fd, target.c_str(), target.length());
++            usleep(500000);
++            write(fd, std::to_string(target).c_str(), std::to_string(target).length());
 +            usleep(15000);
-+            write(fd, original.c_str(), original.length());
++            write(fd, std::to_string(current).c_str(), std::to_string(current).length());
 +            close(fd);
 +        }
 +    }).detach();
@@ -45,7 +49,7 @@ index 6ce2b69..a1cbd17 100644
  BiometricsFingerprint::BiometricsFingerprint()
      : mOplusDisplayFd(open("/dev/oplus_display", O_RDWR)) {
      mOplusBiometricsFingerprint = IOplusBiometricsFingerprint::getService();
-@@ -90,6 +110,7 @@ Return<void> BiometricsFingerprint::onFingerDown(uint32_t x, uint32_t y, float m
+@@ -90,6 +114,7 @@ Return<void> BiometricsFingerprint::onFingerDown(uint32_t x, uint32_t y, float m
  
  Return<void> BiometricsFingerprint::onFingerUp() {
      setFpPress(0);
@@ -53,7 +57,7 @@ index 6ce2b69..a1cbd17 100644
      return isUff() ? Void() : mOplusBiometricsFingerprint->onFingerUp();
  }
  
-@@ -111,6 +132,7 @@ Return<void> BiometricsFingerprint::onAuthenticated(uint64_t deviceId, uint32_t
+@@ -111,6 +136,7 @@ Return<void> BiometricsFingerprint::onAuthenticated(uint64_t deviceId, uint32_t
          setDimlayerHbm(0);
      }
      setFpPress(0);
@@ -61,7 +65,7 @@ index 6ce2b69..a1cbd17 100644
      return mClientCallback->onAuthenticated(deviceId, fingerId, groupId, token);
  }
  
-@@ -118,6 +140,7 @@ Return<void> BiometricsFingerprint::onError(uint64_t deviceId, FingerprintError
+@@ -118,6 +144,7 @@ Return<void> BiometricsFingerprint::onError(uint64_t deviceId, FingerprintError
                                              int32_t vendorCode) {
      setDimlayerHbm(0);
      setFpPress(0);
