@@ -1,0 +1,78 @@
+From 76d9e82561dfcd9f9f0dc9a0afc3967d1f1d4584 Mon Sep 17 00:00:00 2001
+From: liwhy1
+Date: Tue, 26 May 2026 17:38:00 +0200
+Subject: [PATCH] fingerprint: Poke brightness after fingerprint events
+
+---
+ hidl/fingerprint/BiometricsFingerprint.cpp | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp b/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
+index 6ce2b69..2f77055 100644
+--- a/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
++++ b/hardware/oplus/hidl/fingerprint/BiometricsFingerprint.cpp
+@@ -17,6 +17,7 @@
+ #define LOG_TAG "android.hardware.biometrics.fingerprint@2.3-service.oplus"
+ 
+ #include "BiometricsFingerprint.h"
++#include <thread>
+ 
+ namespace android {
+ namespace hardware {
+@@ -25,6 +26,29 @@ namespace fingerprint {
+ namespace V2_3 {
+ namespace implementation {
+ 
++static void pokeBrightness() {
++    std::thread([]() {
++        int fd = open("/sys/class/leds/lcd-backlight/brightness", O_RDWR);
++        if (fd != -1) {
++            char p[16];
++            int ret = read(fd, p, sizeof(p) - 1);
++            if (ret <= 0) {
++                close(fd);
++                return;
++            }
++            p[ret] = 0;
++            int current = atoi(p);
++            int target = (current < 70) ? current + 50 : current - 50;
++
++            usleep(500000);
++            write(fd, std::to_string(target).c_str(), std::to_string(target).length());
++            usleep(15000);
++            write(fd, std::to_string(current).c_str(), std::to_string(current).length());
++            close(fd);
++        }
++    }).detach();
++}
++
+ BiometricsFingerprint::BiometricsFingerprint()
+     : mOplusDisplayFd(open("/dev/oplus_display", O_RDWR)) {
+     mOplusBiometricsFingerprint = IOplusBiometricsFingerprint::getService();
+@@ -90,6 +114,7 @@ Return<void> BiometricsFingerprint::onFingerDown(uint32_t x, uint32_t y, float m
+ 
+ Return<void> BiometricsFingerprint::onFingerUp() {
+     setFpPress(0);
++    pokeBrightness();
+     return isUff() ? Void() : mOplusBiometricsFingerprint->onFingerUp();
+ }
+ 
+@@ -111,6 +136,7 @@ Return<void> BiometricsFingerprint::onAuthenticated(uint64_t deviceId, uint32_t
+         setDimlayerHbm(0);
+     }
+     setFpPress(0);
++    pokeBrightness();
+     return mClientCallback->onAuthenticated(deviceId, fingerId, groupId, token);
+ }
+ 
+@@ -118,6 +144,7 @@ Return<void> BiometricsFingerprint::onError(uint64_t deviceId, FingerprintError
+                                             int32_t vendorCode) {
+     setDimlayerHbm(0);
+     setFpPress(0);
++    pokeBrightness();
+     return mClientCallback->onError(deviceId, error, vendorCode);
+ }
+ 
+-- 
+2.55.0.windows.3
+
